@@ -42,11 +42,14 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
     private RadioButton rbRectangle;
     private Spinner spinner;
     private Context context;
-    public static final String gambarcon = "";
+    ImageView igg;
+    public static final String gambarcon = "ada";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_imagekit);
+      //  igg.setDrawingCacheEnabled(true);
         cropLayoutView = findViewById(R.id.cropImageView);
         cropImage = findViewById(R.id.btn_crop_image);
         rotate = findViewById(R.id.btn_rotate);
@@ -91,34 +94,25 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
             }
         });
         rbRectangle = findViewById(R.id.rb_rectangle);
-        String gambar1 = getIntent().getStringExtra(gambarcon);
-        if(gambar1=="") {
+
+        String gambar1x = getIntent().getStringExtra(gambarcon);
+        if(gambar1x=="ada") {
             Intent intent = new SafeIntent(getIntent());
             inputBm = Utility.getBitmapFromUriStr(intent, this);
             cropLayoutView.setImageBitmap(inputBm);
         } else {
-            Toast.makeText(imagekit.this, "Please wait, it may take a few minute...", Toast.LENGTH_LONG)
-                    .show();
-            inputBm = getBitmapFromURL(gambar1);
-            cropLayoutView.setImageBitmap(inputBm);
+            Toast.makeText(imagekit.this, "Please wait, it may take a few minute...", Toast.LENGTH_LONG).show();
+            new imagekit.DownloadImageFromInternet((ImageView) findViewById(R.id.imageView2)).execute(gambar1x);
+            try{
+            igg=findViewById(R.id.imageView2);
+            igg.setDrawingCacheEnabled(true);
+            cropLayoutView.setImageBitmap(igg.getDrawingCache());
+            }  catch (Exception ex) {
+                Toast.makeText(imagekit.this, "Failed " + ex, Toast.LENGTH_LONG).show();
+            }
         }
+    }
 
-    }
-    public static Bitmap getBitmapFromURL(String imgUrl) {
-        try {
-            URL url = new URL(imgUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            //Toast.makeText(getApplicationContext(), "Please wait, it may take a few minute...",Toast.LENGTH_SHORT).show();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            // Log exception
-            return null;
-        }
-    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -160,34 +154,4 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private Bitmap LoadImage(String URL, BitmapFactory.Options options)
-    {
-        Bitmap bitmap = null;
-        InputStream in = null;
-        try {
-            in = OpenHttpConnection(URL);
-            bitmap = BitmapFactory.decodeStream(in, null, options);
-            in.close();
-        } catch (IOException e1) {
-        }
-        return bitmap;
-    }
-    private InputStream OpenHttpConnection(String strURL) throws IOException{
-        InputStream inputStream = null;
-        URL url = new URL(strURL);
-        URLConnection conn = url.openConnection();
-        try{
-            HttpURLConnection httpConn = (HttpURLConnection)conn;
-            httpConn.setRequestMethod("GET");
-            httpConn.connect();
-
-            if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                inputStream = httpConn.getInputStream();
-            }
-        }
-        catch (Exception ex)
-        {
-        }
-        return inputStream;
-    }
 }

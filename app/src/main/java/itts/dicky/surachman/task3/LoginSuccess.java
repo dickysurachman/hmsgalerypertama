@@ -55,7 +55,7 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
     private final int mRequestCode = 100;
 
     TextView teks;
-    Button but1;
+    Button but1,but2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +77,9 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
         teks.setText("Welcome "+  name1 +"\n"+"Your Email "+  emails );
         but1 = findViewById(R.id.maps);
         but1.setOnClickListener(this);
+        but2 = findViewById(R.id.imagekit2);
+        but2.setOnClickListener(this);
+
         //Gbr = findViewById(R.id.imageView);
         new DownloadImageFromInternet((ImageView) findViewById(R.id.imageView)).execute(gambar1);
 
@@ -159,15 +162,12 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
             case R.id.maps:
                 getByAlbum(LoginSuccess.this, GET_BY_CROP);
                 break;
-                //Intent goto3 = new Intent(LoginSuccess.this,imagekit.class);
-                //Toast.makeText(getApplicationContext(), "Please wait, it may take a few minute...",Toast.LENGTH_SHORT).show();
-                //startActivity(goto3);
-                //break;
             case R.id.imagekit2:
-                Intent intent4 = new Intent(LoginSuccess.this,
-                        imagekit.class);
-                intent4.putExtra(imagekit.gambarcon,"https://www.intiwhiz.com/themenew/img/slide/8.jpg");
-//                intent4.putExtra("uri", "https://www.intiwhiz.com/themenew/img/slide/8.jpg");
+                Toast.makeText(LoginSuccess.this, "Please wait for download sample", Toast.LENGTH_LONG)
+                        .show();
+                Intent intent4 = new Intent(LoginSuccess.this, imagekit.class);
+                intent4.putExtra(imagekit.gambarcon,"https://www.intiwhiz.com/images/prioritize/intiwhiz1.jpg");
+                intent4.putExtra("uri","https://www.intiwhiz.com/themenew/img/slide/8.jpg");
                 startActivity(intent4);
                 break;
         }
