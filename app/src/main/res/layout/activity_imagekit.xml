@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -95,20 +94,13 @@
     </LinearLayout>
 
 
-    <com.huawei.hms.image.vision.crop.CropLayoutView
+    <com.huawei.hms.image.vision.crop.CropLayoutView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cropImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        tools:ignore="MissingClass" >
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="match_parent"
-            android:layout_height="342dp"
-            android:visibility="visible"
-            tools:srcCompat="@tools:sample/avatars" />
-    </com.huawei.hms.image.vision.crop.CropLayoutView>
+        tools:ignore="MissingClass" />
 
 </LinearLayout>
 

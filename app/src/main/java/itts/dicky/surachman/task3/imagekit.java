@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -21,11 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.huawei.hms.image.vision.crop.CropLayoutView;
 import com.huawei.secure.android.common.intent.SafeIntent;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 
 public class imagekit extends AppCompatActivity implements View.OnClickListener  {
     private static final String TAG = "CropImageActivity";
@@ -42,14 +37,11 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
     private RadioButton rbRectangle;
     private Spinner spinner;
     private Context context;
-    ImageView igg;
     public static final String gambarcon = "ada";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_imagekit);
-      //  igg.setDrawingCacheEnabled(true);
         cropLayoutView = findViewById(R.id.cropImageView);
         cropImage = findViewById(R.id.btn_crop_image);
         rotate = findViewById(R.id.btn_rotate);
@@ -94,19 +86,15 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
             }
         });
         rbRectangle = findViewById(R.id.rb_rectangle);
-
         String gambar1x = getIntent().getStringExtra(gambarcon);
-        if(gambar1x=="ada") {
+        if(gambar1x.equals("313")) {
             Intent intent = new SafeIntent(getIntent());
             inputBm = Utility.getBitmapFromUriStr(intent, this);
             cropLayoutView.setImageBitmap(inputBm);
         } else {
             Toast.makeText(imagekit.this, "Please wait, it may take a few minute...", Toast.LENGTH_LONG).show();
-            new imagekit.DownloadImageFromInternet((ImageView) findViewById(R.id.imageView2)).execute(gambar1x);
             try{
-            igg=findViewById(R.id.imageView2);
-            igg.setDrawingCacheEnabled(true);
-            cropLayoutView.setImageBitmap(igg.getDrawingCache());
+            new imagekit.DownloadImageFromInternet((CropLayoutView) findViewById(R.id.cropImageView)).execute(gambar1x);
             }  catch (Exception ex) {
                 Toast.makeText(imagekit.this, "Failed " + ex, Toast.LENGTH_LONG).show();
             }
@@ -131,10 +119,11 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
                 break;
         }
     }
+
     private class DownloadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
-        ImageView imageView;
-        public DownloadImageFromInternet(ImageView imageView) {
-            this.imageView=imageView;
+        CropLayoutView crop ;//ImageView imageView;
+        public DownloadImageFromInternet(CropLayoutView crop) {
+            this.crop =crop;
             Toast.makeText(getApplicationContext(), "Please wait, it may take a few minute...",Toast.LENGTH_SHORT).show();
         }
         protected Bitmap doInBackground(String... urls) {
@@ -150,8 +139,7 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
             return bimage;
         }
         protected void onPostExecute(Bitmap result) {
-            imageView.setImageBitmap(result);
+            crop.setImageBitmap(result);
         }
     }
-
 }

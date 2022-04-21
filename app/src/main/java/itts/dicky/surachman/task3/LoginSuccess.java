@@ -40,7 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LoginSuccess extends AppCompatActivity implements View.OnClickListener {
-
     public static final String Name = "Name";
     public static final String Gambar = "Picture";
     public static final String Email1 = "Email";
@@ -79,7 +78,6 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
         but1.setOnClickListener(this);
         but2 = findViewById(R.id.imagekit2);
         but2.setOnClickListener(this);
-
         //Gbr = findViewById(R.id.imageView);
         new DownloadImageFromInternet((ImageView) findViewById(R.id.imageView)).execute(gambar1);
 
@@ -166,8 +164,7 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(LoginSuccess.this, "Please wait for download sample", Toast.LENGTH_LONG)
                         .show();
                 Intent intent4 = new Intent(LoginSuccess.this, imagekit.class);
-                intent4.putExtra(imagekit.gambarcon,"https://www.intiwhiz.com/images/prioritize/intiwhiz1.jpg");
-                intent4.putExtra("uri","https://www.intiwhiz.com/themenew/img/slide/8.jpg");
+                intent4.putExtra(imagekit.gambarcon,"https://www.intiwhiz.com/themenew/img/slide/1.jpg");
                 startActivity(intent4);
                 break;
         }
@@ -191,6 +188,7 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
                             Intent intent4 = new Intent(LoginSuccess.this,
                                     imagekit.class);
                             intent4.putExtra("uri", uri.toString());
+                            intent4.putExtra(imagekit.gambarcon,"313");
                             startActivity(intent4);
                             break;
                     }
@@ -223,4 +221,5 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
             }
         }
     }
+
 }
