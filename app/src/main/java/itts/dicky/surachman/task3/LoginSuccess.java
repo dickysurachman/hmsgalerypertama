@@ -163,7 +163,13 @@ public class LoginSuccess extends AppCompatActivity implements View.OnClickListe
                 //Toast.makeText(getApplicationContext(), "Please wait, it may take a few minute...",Toast.LENGTH_SHORT).show();
                 //startActivity(goto3);
                 //break;
-
+            case R.id.imagekit2:
+                Intent intent4 = new Intent(LoginSuccess.this,
+                        imagekit.class);
+                intent4.putExtra(imagekit.gambarcon,"https://www.intiwhiz.com/themenew/img/slide/8.jpg");
+//                intent4.putExtra("uri", "https://www.intiwhiz.com/themenew/img/slide/8.jpg");
+                startActivity(intent4);
+                break;
         }
     }
     public static void getByAlbum(Activity act, int type) {

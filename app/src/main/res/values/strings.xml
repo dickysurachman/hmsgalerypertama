@@ -1,5 +1,7 @@
 <resources>
-    <string name="app_name">Account Image Kit</string>
-    <string name="mylocation">Image Kit</string>
+    <string name="app_name">ITTS DEMO Account Image Kit</string>
+    <string name="mylocation">Image from Device</string>
+    <string name="mylocation2">Image Picture Sample</string>
+    <string name="acc">ITTS DEMO ACCOUNT AND IMAGE KIT</string>
     <string name="urlToken">https://login.cloud.huawei.com/oauth2/v2/token</string>
 </resources>

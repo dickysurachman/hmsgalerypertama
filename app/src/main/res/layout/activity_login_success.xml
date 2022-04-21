@@ -38,12 +38,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="250dp"
         android:layout_height="197dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        xmlns:hwads="http://schemas.android.com/apk/res-auto">
+        app:layout_constraintStart_toStartOf="parent">
 
         <com.huawei.hms.ads.banner.BannerView
             android:id="@+id/hw_banner_view"
@@ -53,6 +53,16 @@
             hwads:adId="testw6vs28auh3"
             hwads:bannerSize="BANNER_SIZE_360_57" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/imagekit2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mylocation2"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maps" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

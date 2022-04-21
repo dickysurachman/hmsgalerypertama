@@ -4,18 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.huawei.hms.image.vision.crop.CropLayoutView;
 import com.huawei.secure.android.common.intent.SafeIntent;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 
 public class imagekit extends AppCompatActivity implements View.OnClickListener  {
     private static final String TAG = "CropImageActivity";
@@ -32,6 +42,7 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
     private RadioButton rbRectangle;
     private Spinner spinner;
     private Context context;
+    public static final String gambarcon = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,11 +91,34 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
             }
         });
         rbRectangle = findViewById(R.id.rb_rectangle);
-        Intent intent = new SafeIntent(getIntent());
-        inputBm = Utility.getBitmapFromUriStr(intent, this);
-        cropLayoutView.setImageBitmap(inputBm);
-    }
+        String gambar1 = getIntent().getStringExtra(gambarcon);
+        if(gambar1=="") {
+            Intent intent = new SafeIntent(getIntent());
+            inputBm = Utility.getBitmapFromUriStr(intent, this);
+            cropLayoutView.setImageBitmap(inputBm);
+        } else {
+            Toast.makeText(imagekit.this, "Please wait, it may take a few minute...", Toast.LENGTH_LONG)
+                    .show();
+            inputBm = getBitmapFromURL(gambar1);
+            cropLayoutView.setImageBitmap(inputBm);
+        }
 
+    }
+    public static Bitmap getBitmapFromURL(String imgUrl) {
+        try {
+            URL url = new URL(imgUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            //Toast.makeText(getApplicationContext(), "Please wait, it may take a few minute...",Toast.LENGTH_SHORT).show();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            // Log exception
+            return null;
+        }
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -102,5 +136,58 @@ public class imagekit extends AppCompatActivity implements View.OnClickListener 
                 cropLayoutView.flipImageVertically();
                 break;
         }
+    }
+    private class DownloadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
+        ImageView imageView;
+        public DownloadImageFromInternet(ImageView imageView) {
+            this.imageView=imageView;
+            Toast.makeText(getApplicationContext(), "Please wait, it may take a few minute...",Toast.LENGTH_SHORT).show();
+        }
+        protected Bitmap doInBackground(String... urls) {
+            String imageURL=urls[0];
+            Bitmap bimage=null;
+            try {
+                InputStream in=new java.net.URL(imageURL).openStream();
+                bimage= BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error Message", e.getMessage());
+                e.printStackTrace();
+            }
+            return bimage;
+        }
+        protected void onPostExecute(Bitmap result) {
+            imageView.setImageBitmap(result);
+        }
+    }
+
+    private Bitmap LoadImage(String URL, BitmapFactory.Options options)
+    {
+        Bitmap bitmap = null;
+        InputStream in = null;
+        try {
+            in = OpenHttpConnection(URL);
+            bitmap = BitmapFactory.decodeStream(in, null, options);
+            in.close();
+        } catch (IOException e1) {
+        }
+        return bitmap;
+    }
+    private InputStream OpenHttpConnection(String strURL) throws IOException{
+        InputStream inputStream = null;
+        URL url = new URL(strURL);
+        URLConnection conn = url.openConnection();
+        try{
+            HttpURLConnection httpConn = (HttpURLConnection)conn;
+            httpConn.setRequestMethod("GET");
+            httpConn.connect();
+
+            if (httpConn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                inputStream = httpConn.getInputStream();
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+        return inputStream;
     }
 }
